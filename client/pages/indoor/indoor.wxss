@@ -1,0 +1,61 @@
+/* pages/indoor/indoor.wxss */
+.header {
+    width: 100vw;
+    padding: 10rpx;
+    background-color: #25c6fc;
+}
+
+.loc-select-view {
+    display: flex;
+    align-items: center;
+    color:#fff;
+    padding: 10rpx 50rpx;
+}
+
+.loc-select-view > view {
+    width: 100vw;
+    border-bottom: 1rpx solid #fff;
+}
+
+.loc-select-view > view  > icon {
+    padding:16rpx 16rpx 16rpx 0rpx;
+}
+
+.map-container {
+    width: 100vw;
+    flex: auto;
+    display: flex;
+    position: relative;
+}
+
+.map-container > map {
+    width: 100vw;
+    flex:auto;
+    height:auto;
+}
+
+.cover {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 10rpx;
+    border: 1rpx solid #a2b4ba;
+}
+
+.cover.floor {
+    top:50rpx;
+    left:50rpx;
+    height:80rpx;
+    width:80rpx;  
+}
+
+.cover.locate {
+    bottom:50rpx;
+    left:50rpx;
+    height:80rpx;
+    width:80rpx;  
+}
+
+.footer {
+    width: 100vw;
+    height: 100rpx;
+}

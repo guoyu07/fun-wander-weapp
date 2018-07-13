@@ -1,0 +1,63 @@
+/**map.wxss**/
+.map {
+    width: 100vw;
+    height: 100vh;
+}
+
+.cover {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 10rpx;
+    border: 1rpx solid #a2b4ba;
+}
+
+.cover.search {
+    top: 50rpx;
+    left: 50rpx;
+    height:100rpx;
+    width:590rpx;
+    display:flex;
+    align-items:center;
+    background:#fff;
+    padding:0rpx 30rpx;
+    color: #a2b4ba;    
+}
+
+.cover.scale {
+    bottom: 180rpx;
+    left: 50rpx;
+    height: 160rpx;
+    width: 80rpx;
+    border-radius: 40rpx;   
+}
+
+.cover.scale > .out {
+    padding: 8rpx;
+    border-radius:40rpx 40rpx 0rpx 0rpx;
+}
+
+.cover.scale > .in {
+    padding: 8rpx;
+    border-radius: 0rpx 0rpx 40rpx 40rpx;   
+}
+
+.cover.locate {
+    bottom:50rpx;
+    left:50rpx;
+    height:80rpx;
+    width:80rpx;  
+}
+
+.cover.route {
+    bottom:200rpx;
+    right:50rpx;
+    height:100rpx;
+    width:100rpx;  
+}
+
+.cover.indoor {
+    bottom:50rpx;
+    right:50rpx;
+    height:100rpx;
+    width:100rpx;   
+}

@@ -1,0 +1,53 @@
+<!--pages/indoor/indoor.wxml-->
+<view class="container">
+    <!-- 导航信息选择区 -->
+    <view class="header">
+        <view class="loc-select-view">
+            <view bindtap="selectBuilding">
+                <icon type="waiting" size="23" />
+                <text wx:if="{{building}}">{{building.name}}</text>
+                <text wx:else>室内场所</text>
+            </view>
+        </view>
+        <view class="loc-select-view">
+            <view bindtap="selectStart">
+                <icon type="success_no_circle" size="23" />
+                <text wx:if="{{startPoi}}">{{startPoi.name}}</text>
+                <text wx:else>起点位置</text>
+            </view>
+        </view>
+        <view class="loc-select-view">
+            <view bindtap="selectEnd">
+                <icon type="success" size="23" />
+                <text wx:if="{{endPoi}}">{{endPoi.name}}</text>
+                <text wx:else>终点位置</text>
+            </view>
+        </view>
+    </view>
+    <view class="map-container">
+        <map wx:if="{{building}}" id="map" longitude="{{center.lon}}" latitude="{{center.lat}}" scale="{{scale}}" markers="{{markers}}" polyline="{{polyline}}" show-location>
+            <cover-view class="cover locate" bindtap="locate">
+                <cover-view style="padding: 10rpx;">
+                    <cover-image src="../../resources/locate.png"></cover-image>
+                </cover-view>
+            </cover-view>
+        </map>
+        <view class="cover floor" wx:if="{{building.floors.length > 0}}">
+            <!--先用picker，后续再改善为更快捷的交互 -->
+            <picker bindchange="floorChange" value="{{0}}" range="{{building.floors}}">
+                <view style="padding: 10rpx;">
+                    <image src="../../resources/floor.png" style="width: 64rpx; height: 64rpx;"/>
+                </view>
+            </picker>
+        </view>
+    </view>
+    <view class="footer" wx:if="{{route}}">
+        <view>
+            <text>步行1024米，搭乘3次扶梯，1次直梯，约15分钟。</text>
+            <text>A座，乘扶梯下3层，B座，乘直梯上15层。</text>
+        </view>
+        <view>
+            <button>导 航</button>
+        </view>
+    </view>
+</view>

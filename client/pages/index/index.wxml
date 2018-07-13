@@ -30,10 +30,17 @@
     </view>
 
 
-    <!-- 上传图片测试 -->
+    <!-- 增加CGI说明 -->
     <view class="uploader">
         <navigator url="../addCgi/addCgi" open-type="navigate" class="uploader-text">
             <text>快速增加 CGI</text>
+        </navigator>
+    </view>
+
+    <!-- 上传图片测试 -->
+    <view class="uploader">
+        <navigator url="../map/map" open-type="redirect" class="uploader-text">
+            <text>打开地图</text>
         </navigator>
     </view>
 </view>

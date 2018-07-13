@@ -1,0 +1,31 @@
+<!--map.wxml-->
+<view class="container">
+    <map id="map" class="map" longitude="{{center.lon}}" latitude="{{center.lat}}" scale="{{scale}}" markers="{{markers}}" bindmarkertap="markertap" polyline="{{polyline}}" bindregionchange="regionchange" show-location>
+        <cover-view class="cover search">
+            <cover-image></cover-image>
+        </cover-view>
+        <cover-view class="cover scale">
+            <cover-view style="padding: 8rpx;" bindtap="scaleOut">
+                <cover-image src="../../resources/plus.png"></cover-image>
+            </cover-view>
+            <cover-view style="padding: 8rpx;" bindtap="scaleIn">
+                <cover-image src="../../resources/minus.png"></cover-image>
+            </cover-view>
+        </cover-view>
+        <cover-view class="cover locate" bindtap="locate">
+            <cover-view style="padding: 8rpx;">
+                <cover-image src="../../resources/locate.png"></cover-image>
+            </cover-view>
+        </cover-view>
+        <cover-view class="cover route" bindtap="route">
+            <cover-view style="padding: 20rpx 2rpx;">
+                <cover-image src="../../resources/navigation.png"></cover-image>
+            </cover-view>
+        </cover-view>
+        <cover-view class="cover indoor" bindtap="indoor">
+            <cover-view style="padding: 20rpx 10rpx;">
+                <cover-image src="../../resources/indoor.png"></cover-image>
+            </cover-view>
+        </cover-view>
+    </map>
+</view>

@@ -1,0 +1,40 @@
+/* pages/building/building.wxss */
+.search-view {
+    width: 100vw;
+    background-color: gainsboro;
+}
+
+.search-view > view {
+    padding: 20rpx 40rpx;
+}
+
+.search-input {
+    background-color: #fff;
+    border: 1rpx solid black;
+    padding: 0rpx 10rpx;
+    border-radius: 10rpx;
+}
+
+.data-list {
+    width: 100vw;
+}
+
+.list-item {
+    width: 100vw;
+    border-bottom: 1rpx solid gainsboro;
+    padding: 10rpx 20rpx;
+}
+
+.list-item > text.name {
+    width: 100vw;
+}
+
+.list-item text.distance {
+    font-size: 32rpx;
+    color: gray;
+}
+
+.list-item text.address {
+    padding-left: 20rpx;
+    font-size: 32rpx;
+}
