@@ -5,7 +5,8 @@
         "pages/map/map",
         "pages/indoor/indoor",
         "pages/building/building",
-        "pages/selectPoi/selectPoi"
+        "pages/selectPoi/selectPoi",
+		"pages/search/search"
     ],
     "window": {
         "backgroundColor": "#F6F6F6",

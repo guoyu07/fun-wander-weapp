@@ -1,0 +1,29 @@
+<!--pages/search/search.wxml-->
+<view class="container">
+    <!-- 搜索框 -->
+    <view class="search-view">
+		<view class='view-area'>查找范围：{{searchArea.name}}</view>
+        <view class="search-item">
+			<icon type="search" size="18" color="#ccc"/>
+            <input class="search-input" bindinput ="userNameInput" value="{{searchValue}}" placeholder="查找室内地点"></input>
+			<button class='search-btn' bindtap="sarching">搜索</button>
+        </view>
+		<view class='shotcuts'>
+			<image data-shortcut="{{item}}" bindtap="tapShotCut" class="{{item.active ? 'shortcut-item activeBg': 'shortcut-item'}}" wx:key="idx" wx:for="{{shortCuts}}" wx:for-index="idx" wx:for-item="item" src='{{item.url}}' />
+		</view>
+		<view class='data-list-panel'>搜索结果</view>
+    </view>
+	<!-- 搜索数据列表 -->
+    <view class="data-list">
+        <view class="list-item" wx:key="idx" wx:for="{{pois}}" wx:for-index="idx" wx:for-item="item" data-building="{{item}}" bindtap="selectSearchResult">
+			<image class='serchIcon' src='{{searchicon}}' />
+			<view class='searchContent'>
+				<text class="name text-ellipsis">{{item.name}}</text>
+				<view class='detail'>
+					<text class="distance">{{item.distance}}</text>
+					<text class="address text-ellipsis">{{item.address}}</text>
+				</view>
+			</view>
+        </view>
+    </view>
+</view>

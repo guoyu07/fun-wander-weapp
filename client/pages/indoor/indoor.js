@@ -36,7 +36,7 @@ Page({
         const data = {};
         // todo: 从缓存中取出buildingId，向服务请求buiding的详情，包括名称、平面图，楼层数等等
         // req: 查询building详情的接口
-        data.building = wx.getStorageSync('building');
+        data.building = wx.getStorageSync('building') || {};
         data.building.floors = [1, 2, 3]; // 楼层
         data.startPoi = wx.getStorageSync('startPoi');
         data.endPoi = wx.getStorageSync('endPoi');

@@ -111,6 +111,12 @@ Page({
 
     },
 
+	searchBuilding: function () {
+		wx.navigateTo({
+			url: '../search/search',
+		})
+	},
+
     /**
      * 单击选中一个建筑物
      */
