@@ -1,0 +1,62 @@
+<view class="container">
+    <view class="header">
+        <view class="loc-select-view">
+            <icon type="search" size="20" />
+            <input class="search-input" value='{{searchName}}' bindblur="autoSearch"  placeholder="搜索门店"></input>
+        </view>
+    </view>
+    <view class="map-container">
+        <map id="map" longitude="{{center.lon}}" latitude="{{center.lat}}" scale="{{scale}}">
+            <cover-view class="cover locate" bindtap="locate">
+                <cover-view style="padding: 10rpx;">
+                    <cover-image src="../../resources/locate.png"></cover-image>
+                </cover-view>
+            </cover-view>
+            <cover-view wx:if="{{fooltFlag}}" class="flotage">
+              <cover-view class='title'>
+                <cover-view class='one'>搜索范围：{{searchName}}</cover-view>
+                <cover-view class='two' bindtap='confirm'>确定</cover-view>
+              </cover-view>
+              <cover-view class='list'>
+                <cover-view class='item' hover-class="itme-hover" wx:key="name" wx:for="{{searchList}}" wx:for-item="item" data-select="{{item}}" bindtap="selectedItem">
+                  <cover-image class='left' src="../../resources/location1.png"></cover-image>
+                  <cover-view class='content'>
+                    <cover-view>{{item.name}}</cover-view>
+                    <cover-view class='sub'>{{item.subName}}</cover-view>
+                  </cover-view>
+                  <cover-image class='right' wx:if="{{item.selected}}" class='right' src="../../resources/checked.png"></cover-image>
+                </cover-view>
+
+                <cover-view wx:if="{{searchList.length <= 0}}" class='item'>
+                  <cover-view class='left'></cover-view>
+                  <cover-view class='content'>
+                    <cover-view>没有搜索到数据，请搜索'盈樾国际'试试</cover-view>
+                  </cover-view>
+                  <cover-view ></cover-view>
+                </cover-view>
+                <!-- <cover-view class='item'>
+                  <cover-image class='left' src="../../resources/list.png"></cover-image> 
+                  <text class='content'>第一个为</text>
+                  <cover-image class='right' src="../../resources/checked.png"></cover-image>
+                </cover-view> -->
+                <!-- <cover-view class='item'>
+                  <cover-image src="../../resources/list.png"></cover-image>
+                  第一个为
+                  <cover-image class='right' src="../../resources/checked.png"></cover-image>
+                </cover-view>
+                <cover-view class='item'>
+                  <cover-image src="../../resources/list.png"></cover-image> 
+                  第一个为 <cover-image class='right' src="../../resources/checked.png"></cover-image>
+                </cover-view> -->
+              </cover-view>
+          </cover-view>
+        </map>
+        <view class="cover floor" wx:if="{{building.floors.length > 0}}">
+            <picker bindchange="floorChange" value="{{0}}" range="{{building.floors}}">
+                <view style="padding: 10rpx;">
+                    <image src="../../resources/floor.png" style="width: 64rpx; height: 64rpx;"/>
+                </view>
+            </picker>
+        </view>
+    </view>
+</view>

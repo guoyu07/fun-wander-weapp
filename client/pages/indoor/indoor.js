@@ -33,6 +33,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function() {
+        
         const data = {};
         // todo: 从缓存中取出buildingId，向服务请求buiding的详情，包括名称、平面图，楼层数等等
         // req: 查询building详情的接口
@@ -102,6 +103,7 @@ Page({
 
             this.setData(data);
         }
+      this.initStartEndLocation();
     },
 
     /**
@@ -109,6 +111,7 @@ Page({
      */
     onHide: function() {
         console.log('hide');
+
     },
 
     /**
@@ -146,11 +149,15 @@ Page({
     },
 
     selectStart: function() {
-
+      wx.navigateTo({
+        url: '../location/location?flag=start',
+      })
     },
 
     selectEnd: function() {
-
+      wx.navigateTo({
+        url: '../location/location?flag=end',
+      })
     },
 
     /**
@@ -183,4 +190,23 @@ Page({
             }
         })
     },
+
+    initStartEndLocation() {
+      var startLocation = wx.getStorageSync('startLocation');
+      if (startLocation) {
+        this.setData({
+          startPoi: {
+            name: startLocation.name
+          }
+        });
+      }
+      var endLocation = wx.getStorageSync('endLocation');
+      if (endLocation) {
+        this.setData({
+          endPoi: {
+            name: endLocation.name
+          }
+        });
+      }
+    }
 })
