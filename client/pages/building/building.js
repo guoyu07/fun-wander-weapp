@@ -1,4 +1,9 @@
 // pages/building/building.js
+const QQMapWX = require('../../libs/qqmap-wx-jssdk1.0/qqmap-wx-jssdk.js');
+const util = require('../../utils/util')
+const ajax = require('../../utils/ajax')
+
+var qqmapsdk;
 Page({
 
     /**
@@ -14,91 +19,105 @@ Page({
      * 调用服务接口，查询附近可进行室内导航的建筑物
      * req: 根据位置查询周边可导航的建筑物接口
      */
-    onLoad: function(options) {
-        let data = [{
-                id: 1,
-                name: '荣民龙首广场',
-                address: '西安市莲湖区未央路19号',
-                distance: 11828
-            },
-            {
-                id: 2,
-                name: 't-赢樾国际大厦',
-                address: '西安市锦业路103号',
-                distance: 0
-            },
-            {
-                id: 3,
-                name: 't-高新医院',
-                address: '',
-                distance: 10000
-            },
-            {
-                id: 4,
-                name: 't-咸阳国际机场',
-                address: '',
-                distance: 60000
-            }
-        ];
-        data.forEach(it => {
-            if (it.distance < 1000) {
-                it.distance = it.distance + '米';
-            } else {
-                it.distance = Math.floor(it.distance / 100) / 10 + '公里';
-            }
+    onLoad: function (options) {
+        qqmapsdk = new QQMapWX({
+            key: '4GDBZ-34DC2-ZPJUC-CXIJY-JSYM2-GCBK3'
         });
 
-        this.setData({
-            buildings: data
+        const distance = (from, to) => {
+            return new Promise((resolve, reject) => {
+                qqmapsdk.calculateDistance({
+                    from: from,
+                    to: to,
+                    success: res => {
+                        resolve(res.result.elements[0].distance);
+                    }
+                });
+            });
+        };
+
+        const calcDist = (loc, data) => {
+            const p = data.map(it => {
+                const latlon = util.reverseStr(it.center_coordinate, ',')
+                return distance(loc, latlon).then(dist => {
+                    it.distance = dist
+                });
+            });
+
+            return Promise.all(p);
+        };
+
+        const that = this;
+        wx.getLocation({
+            type: '',
+            success: res => {
+                const yLoc = res.latitude + ',' + res.longitude;
+                ajax.get('indoor/building').then(rest => {
+                    const buildings = rest
+
+                    calcDist(yLoc, buildings).then(() => {
+                        this.setData({
+                            buildings: buildings.sort((a, b) => a.distance > b.distance)
+                        });
+                    })
+                }).catch(err => {
+                    this.setData({
+                        buildings: []
+                    });
+                }) 
+            },
+            fail: err => {
+                console.log(err)
+            }
         });
     },
 
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
-    onReady: function() {
+    onReady: function () {
 
     },
 
     /**
      * 生命周期函数--监听页面显示
      */
-    onShow: function() {
+    onShow: function () {
 
     },
 
     /**
      * 生命周期函数--监听页面隐藏
      */
-    onHide: function() {
+    onHide: function () {
 
     },
 
     /**
      * 生命周期函数--监听页面卸载
      */
-    onUnload: function() {
+    onUnload: function () {
 
     },
 
     /**
      * 页面相关事件处理函数--监听用户下拉动作
      */
-    onPullDownRefresh: function() {
+    onPullDownRefresh: function () {
 
     },
 
     /**
      * 页面上拉触底事件的处理函数
      */
-    onReachBottom: function() {
+    onReachBottom: function () {
 
     },
 
     /**
      * 用户点击右上角分享
      */
-    onShareAppMessage: function() {
+    onShareAppMessage: function () {
 
     },
 
@@ -107,14 +126,18 @@ Page({
      * 根据输入内容查可导航的建筑物
      * req: 服务接口
      */
-    searchByTip: function(e, tip) {
-
+    bindKeyInput: function (e) {
+        const val = e.detail.value;
+        const data = this.data.allBuildings;
+        this.setData({
+            buildings: data.filter(it => it.name.indexOf(val) >= 0)
+        });
     },
 
     /**
      * 单击选中一个建筑物
      */
-    selectBuilding: function(e) {
+    selectBuilding: function (e) {
         const data = e.currentTarget.dataset.building;
         wx.setStorageSync('building', data);
         wx.navigateBack();

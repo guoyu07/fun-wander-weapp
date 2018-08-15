@@ -3,7 +3,13 @@
  */
 
 // 此处主机域名修改成腾讯云解决方案分配的域名
-var host = 'https://mxwuqrye.qcloud.la';
+// var host = 'https://mxwuqrye.qcloud.la';
+
+const host = 'http://localhost:5757'
+
+const appName = 'weapp'
+
+const service = host + '/' + appName
 
 var config = {
 
@@ -11,17 +17,19 @@ var config = {
     service: {
         host,
 
+        service,
+
         // 登录地址，用于建立会话
-        loginUrl: `${host}/weapp/login`,
+        loginUrl: `${service}/login`,
 
         // 测试的请求地址，用于测试会话
-        requestUrl: `${host}/weapp/user`,
+        requestUrl: `${service}/user`,
 
         // 测试的信道服务地址
-        tunnelUrl: `${host}/weapp/tunnel`,
+        tunnelUrl: `${service}/tunnel`,
 
         // 上传图片接口
-        uploadUrl: `${host}/weapp/upload`
+        uploadUrl: `${service}/upload`
     }
 };
 
