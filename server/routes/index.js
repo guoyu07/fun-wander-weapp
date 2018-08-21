@@ -48,4 +48,8 @@ router.get('/indoor/building/floor/poi/:floorId', controllers.indoor.getPoisOnFl
 
 router.get('/indoor/building/floor/poiFace/:floorId', controllers.indoor.getPoiFacesOnFloor)
 
+router.get('/indoor/building/poi/:id', controllers.indoor.getPoiById)
+
+router.get('/indoor/building/poi/search', controllers.indoor.getPoisByTip)
+
 module.exports = router
