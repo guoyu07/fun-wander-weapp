@@ -93,7 +93,7 @@ module.exports = {
         const poiId = ctx.params.id
 
         return DB('indoor_poi')
-            .select('poi_id', 'kind', 'c_name as name', 'address', 'face_id', 'indoor_node.node_id')
+            .select('poi_id', 'indoor_poi.kind', 'c_name as name', 'address', 'indoor_poi.face_id', 'indoor_node.node_id')
             .innerJoin('indoor_node', 'indoor_node.face_id', 'indoor_poi.face_id')
             .where('poi_id', poiId)
             .then(res => {
@@ -105,7 +105,7 @@ module.exports = {
         const tip = ctx.query.tip || ''
 
         return DB('indoor_poi')
-            .select('indoor_poi.poi_id', 'indoor_poi.kind', 'indoor_poi.c_name as name', 'indoor_poi.address')
+            .select('poi_id', 'kind', 'c_name as name', 'address')
             .innerJoin('indoor_floor', 'indoor_poi.fl_id', 'indoor_floor.fl_id')
             .where('indoor_floor.building_id', buildingId)
             .andWhere('indoor_poi.c_name', 'like', '%' + tip + '%')
@@ -117,7 +117,7 @@ module.exports = {
         const buildingId = ctx.params.buildingId
 
         return DB('indoor_link')
-            .select('indoor_link.link_id', 'indoor_link.snode_id', 'indoor_link.enode_id', 'indoor_link.direction')
+            .select('link_id', 'snode_id', 'enode_id', 'direction')
             .innerJoin('indoor_floor', 'indoor_link.fl_id', 'indoor_floor.fl_id')
             .where('indoor_floor.building_id', buildingId)
             // .limit(10)
