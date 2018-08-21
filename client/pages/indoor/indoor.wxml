@@ -25,16 +25,16 @@
         </view>
     </view>
     <view class="map-container">
-        <map wx:if="{{building}}" id="map" longitude="{{center.lon}}" latitude="{{center.lat}}" scale="{{scale}}" markers="{{markers}}" polyline="{{polyline}}" show-location>
+        <map wx:if="{{building}}" id="map" longitude="{{center.lon}}" latitude="{{center.lat}}" scale="{{scale}}" markers="{{markers}}" polyline="{{polylines}}" circles="{{circles}}" show-location>
             <cover-view class="cover locate" bindtap="locate">
                 <cover-view style="padding: 10rpx;">
                     <cover-image src="../../resources/locate.png"></cover-image>
                 </cover-view>
             </cover-view>
         </map>
-        <view class="cover floor" wx:if="{{building.floors.length > 0}}">
+        <view class="cover floor" wx:if="{{floors.length > 0}}">
             <!--先用picker，后续再改善为更快捷的交互 -->
-            <picker bindchange="floorChange" value="{{0}}" range="{{building.floors}}">
+            <picker bindchange="floorChange" value="{{0}}" range="{{floors}}" range-key="fl_name">
                 <view style="padding: 10rpx;">
                     <image src="../../resources/floor.png" style="width: 64rpx; height: 64rpx;"/>
                 </view>
