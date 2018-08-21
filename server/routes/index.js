@@ -50,6 +50,8 @@ router.get('/indoor/building/floor/poiFace/:floorId', controllers.indoor.getPoiF
 
 router.get('/indoor/building/poi/:id', controllers.indoor.getPoiById)
 
-router.get('/indoor/building/poi/search', controllers.indoor.getPoisByTip)
+router.get('/indoor/building/search/poi', controllers.indoor.getPoisByTip)
+
+router.get('/indoor/building/link/:buildingId', controllers.indoor.getLinksInBuilding)
 
 module.exports = router
