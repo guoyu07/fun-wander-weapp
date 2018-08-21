@@ -3,11 +3,11 @@
     <!-- 用户登录测试 -->
     <view class="search-view">
         <view>
-            <input class="search-input" placeholder="搜索建筑物" bindinput='bindKeyInput'></input>
+            <input bindtap="searchBuilding" class="search-input" placeholder="搜索建筑物"></input>
         </view>
     </view>
     <view class="data-list">
-        <view class="list-item" wx:for="{{buildings}}" wx:for-index="idx" wx:for-item="item" wx:key="{{item.id}}" data-building="{{item}}" bindtap="selectBuilding">
+        <view class="list-item" wx:key="idx" wx:for="{{buildings}}" wx:for-index="idx" wx:for-item="item" data-building="{{item}}" bindtap="selectBuilding">
             <text class="name">{{item.name}}</text>
             <view>
                 <text class="distance">{{item.distance}}</text>

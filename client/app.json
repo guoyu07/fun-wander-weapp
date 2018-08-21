@@ -6,6 +6,7 @@
         "pages/indoor/indoor",
         "pages/building/building",
         "pages/selectPoi/selectPoi",
+		"pages/search/search",
         "pages/location/location"
        
     ],
