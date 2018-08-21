@@ -5,7 +5,7 @@ module.exports = {
         const name = ctx.query.name || ''
 
         return DB('indoor_building')
-            .select('building_id as id', 'kind', 'c_name as name', 'address', 'center_coordinate')
+            .select('building_id', 'kind', 'c_name as name', 'address', 'center_coordinate')
             .where('c_name', 'like', '%' + name + '%')
             .then(res => {
                 ctx.state.data = res
@@ -15,7 +15,7 @@ module.exports = {
         const id = ctx.params.id
 
         return DB('indoor_building')
-            .select('building_id as id', 'kind', 'c_name as name', DB.raw('astext(geometry) as geometry'), 'center_coordinate', 'default_fl', 'parking')
+            .select('building_id', 'kind', 'c_name as name', DB.raw('astext(geometry) as geometry'), 'center_coordinate', 'default_fl', 'parking')
             .where('building_id', id)
             .then(res => {
                 ctx.state.data = res
@@ -25,7 +25,7 @@ module.exports = {
         const buildingId = ctx.params.buildingId
 
         return DB('indoor_floor')
-            .select('fl_id as id', 'fl_name', 'fl_num', 'fl_infor', DB.raw('astext(geometry) as geometry'))
+            .select('fl_id', 'fl_name', 'fl_num', 'fl_infor', DB.raw('astext(geometry) as geometry'))
             .where('building_id', buildingId)
             .then(res => {
                 ctx.state.data = res
@@ -58,7 +58,7 @@ module.exports = {
         }
 
         return DB('indoor_node')
-            .select('node_id as id', DB.raw('astext(geometry) as geometry'), 'kind', 'face_id', 'connect_node')
+            .select('node_id', DB.raw('astext(geometry) as geometry'), 'kind', 'face_id', 'connect_node')
             .where('fl_id', floorId)
             .andWhere(param)
             // .limit(10)
@@ -70,7 +70,7 @@ module.exports = {
         const floorId = ctx.params.floorId
 
         return DB('indoor_poi')
-            .select('poi_id as id', 'kind', 'c_name as name', DB.raw('astext(geometry) as geometry'), 'face_id')
+            .select('poi_id', 'kind', 'c_name as name', DB.raw('astext(geometry) as geometry'), 'face_id')
             .where('fl_id', floorId)
             // .limit(10)
             .then(res => {
@@ -80,13 +80,49 @@ module.exports = {
     getPoiFacesOnFloor: async (ctx) => {
         const floorId = ctx.params.floorId
 
-        return DB('indoor_poi')
-            .select('indoor_poi.poi_id as id', 'indoor_poi.kind', 'indoor_poi.c_name as name', 'indoor_face.face_id', DB.raw('astext(indoor_face.geometry) as geometry'))
-            .innerJoin('indoor_face', 'indoor_poi.face_id', 'indoor_face.face_id')
+        return DB('indoor_face')
+            .select('indoor_face.face_id', DB.raw('astext(indoor_face.geometry) as geometry'), 'indoor_poi.poi_id', 'indoor_poi.kind as poi_kind')
+            .innerJoin('indoor_poi', 'indoor_poi.face_id', 'indoor_face.face_id')
             .where('indoor_poi.fl_id', floorId)
             // .limit(10)
             .then(res => {
                 ctx.state.data = res
             })
-    }
+    },
+    getPoiById:  async (ctx) => {
+        const poiId = ctx.params.id
+
+        return DB('indoor_poi')
+            .select('poi_id', 'kind', 'c_name as name', 'address', 'face_id', 'indoor_node.node_id')
+            .innerJoin('indoor_node', 'indoor_node.face_id', 'indoor_poi.face_id')
+            .where('poi_id', poiId)
+            .then(res => {
+                ctx.state.data = res
+            })
+    },
+    getPoisByTip:  async (ctx) => {
+        const buildingId = ctx.query.buildingId
+        const tip = ctx.query.tip || ''
+
+        return DB('indoor_poi')
+            .select('indoor_poi.poi_id', 'indoor_poi.kind', 'indoor_poi.c_name as name', 'indoor_poi.address')
+            .innerJoin('indoor_floor', 'indoor_poi.fl_id', 'indoor_floor.fl_id')
+            .where('indoor_floor.building_id', buildingId)
+            .andWhere('indoor_poi.c_name', 'like', '%' + tip + '%')
+            .then(res => {
+                ctx.state.data = res
+            })
+    },
+    getLinksInBuilding: async ctx => {
+        const buildingId = ctx.params.buildingId
+
+        return DB('indoor_link')
+            .select('indoor_link.link_id', 'indoor_link.snode_id', 'indoor_link.enode_id', 'indoor_link.direction')
+            .innerJoin('indoor_floor', 'indoor_link.fl_id', 'indoor_floor.fl_id')
+            .where('indoor_floor.building_id', buildingId)
+            // .limit(10)
+            .then(res => {
+                ctx.state.data = res
+            })
+    },
 }
