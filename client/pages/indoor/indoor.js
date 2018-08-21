@@ -199,6 +199,7 @@ Page({
 
             // this.setData(data)
         }
+      this.initStartEndLocation();
     },
 
     /**
@@ -242,12 +243,16 @@ Page({
         })
     },
 
-    selectStart: function () {
-
+    selectStart: function() {
+      wx.navigateTo({
+        url: '../location/location?flag=start',
+      })
     },
 
-    selectEnd: function () {
-
+    selectEnd: function() {
+      wx.navigateTo({
+        url: '../location/location?flag=end',
+      })
     },
 
     /**
@@ -286,4 +291,23 @@ Page({
             }
         })
     },
+
+    initStartEndLocation() {
+      var startLocation = wx.getStorageSync('startLocation');
+      if (startLocation) {
+        this.setData({
+          startPoi: {
+            name: startLocation.name
+          }
+        });
+      }
+      var endLocation = wx.getStorageSync('endLocation');
+      if (endLocation) {
+        this.setData({
+          endPoi: {
+            name: endLocation.name
+          }
+        });
+      }
+    }
 })
