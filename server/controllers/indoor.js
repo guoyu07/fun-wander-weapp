@@ -89,7 +89,7 @@ module.exports = {
                 ctx.state.data = res
             })
     },
-    getPoiById:  async (ctx) => {
+    getPoiById: async (ctx) => {
         const poiId = ctx.params.id
 
         return DB('indoor_poi')
@@ -100,8 +100,8 @@ module.exports = {
                 ctx.state.data = res
             })
     },
-    getPoisByTip:  async (ctx) => {
-        const buildingId = ctx.query.buildingId
+    getPoisByTip: async (ctx) => {
+        const buildingId = ctx.query.buildingId || 0
         const tip = ctx.query.tip || ''
 
         return DB('indoor_poi')
@@ -117,12 +117,12 @@ module.exports = {
         const buildingId = ctx.params.buildingId
 
         return DB('indoor_link')
-            .select('link_id', 'snode_id', 'enode_id', 'direction')
+            .select('link_id', 'snode_id', 'enode_id', 'direction', 'length')
             .innerJoin('indoor_floor', 'indoor_link.fl_id', 'indoor_floor.fl_id')
             .where('indoor_floor.building_id', buildingId)
             // .limit(10)
             .then(res => {
                 ctx.state.data = res
             })
-    },
+    }
 }
