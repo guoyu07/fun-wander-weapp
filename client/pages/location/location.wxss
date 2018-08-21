@@ -1,0 +1,127 @@
+/* pages/indoor/indoor.wxss */
+view{
+ font-size: 34rpx;
+}
+.header {
+    width: 100vw;
+    padding: 10rpx;
+    background-color: #25c6fc;
+}
+
+.loc-select-view {
+    display: flex;
+    align-items: center;
+    color:#fff;
+    padding: 10rpx 50rpx;
+}
+
+.search-input {
+  color: #fff;
+  padding: 10rpx;
+}
+
+.map-container {
+    width: 100vw;
+    flex: auto;
+    display: flex;
+    position: relative;
+}
+
+.map-container > map {
+    width: 100vw;
+    flex:auto;
+    height:auto;
+}
+
+.cover {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 10rpx;
+    border: 1rpx solid #a2b4ba;
+}
+
+.cover.floor {
+    top:50rpx;
+    left:50rpx;
+    height:80rpx;
+    width:80rpx;  
+}
+
+.cover.locate {
+    bottom:50rpx;
+    left:50rpx;
+    height:80rpx;
+    width:80rpx;  
+}
+/* 搜索内容样式  */
+.flotage {
+  position: absolute;
+  bottom: 0rpx;
+  width: 100%;
+  height: 400rpx;
+  background-color: #FFFFFF;
+  opacity: 1;
+}
+.flotage .title {
+  border: 1rpx solid #25c6fc;
+  padding: 26rpx 20rpx;
+  background-color: #25c6fc;
+  display: flex;
+  flex-flow:row;
+}
+.flotage .title .one{
+  flex:1;
+}
+
+.flotage .title .two{
+  width: 100rpx;
+}
+
+.flotage .list{
+  max-height: 320rpx;
+  overflow-y: scroll;
+}
+.flotage .list .item {
+  border-bottom: 1rpx solid #25c6fc;
+  padding: 20rpx 30rpx;
+  display: flex;
+  flex-flow:row; /*伸缩项目单行排列*/
+}
+.flotage .list .itme-hover {
+  background-color: #c3c3c3
+}
+
+.flotage .list .left {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.flotage .list .content {
+  flex:1;
+}
+
+.flotage .list .content .sub {
+  font-size: 28rpx;
+  color: #c3c3c3
+}
+
+.flotage .list .right {
+  width: 50rpx;
+  height: 50rpx;
+}
+/* .flotage .list .item{
+  border-bottom: 1rpx solid #25c6fc;
+  padding: 24rpx 30rpx;
+}
+.flotage .list .item cover-image{ 
+    width: 26rpx;
+    height: 26rpx;
+    display: inline-flex
+} 
+
+.flotage .list .item .right{ 
+    float: right;
+    width: 40rpx;
+    height: 40rpx;
+    margin-right: 50rpx;
+}  */

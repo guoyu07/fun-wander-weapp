@@ -48,6 +48,7 @@ Page({
      */
     onReady: function() {
         this.mapCtx = wx.createMapContext('map');
+        this.clearStore();
     },
 
     /**
@@ -170,4 +171,9 @@ Page({
     markertap(e) {
         console.log(e.markerId)
     },
+
+    clearStore() {
+      wx.setStorageSync("startLocation", null); // 清理起点位置信息
+      wx.setStorageSync("endLocation", null); // 清理终点位置信息
+    }
 })

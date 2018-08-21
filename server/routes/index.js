@@ -32,6 +32,20 @@ router.get('/message', controllers.message.get)
 // POST 用来处理微信转发过来的客服消息
 router.post('/message', controllers.message.post)
 
-router.get('/demo', controllers.demo);
+router.get('/demo', controllers.demo)
+
+router.get('/indoor/building', controllers.indoor.getBuildings)
+
+router.get('/indoor/building/:id', controllers.indoor.getBuildingById)
+
+router.get('/indoor/building/floor/:buildingId', controllers.indoor.getFloorsInBuilding)
+
+router.get('/indoor/building/floor/link/:floorId', controllers.indoor.getLinksOnFloor)
+
+router.get('/indoor/building/floor/node/:floorId', controllers.indoor.getNodesOnFloor)
+
+router.get('/indoor/building/floor/poi/:floorId', controllers.indoor.getPoisOnFloor)
+
+router.get('/indoor/building/floor/poiFace/:floorId', controllers.indoor.getPoiFacesOnFloor)
 
 module.exports = router
