@@ -1,4 +1,32 @@
 const DB = require('../middlewares/database')
+const RoutePlanning = require('../util/RoutePlanning')
+
+const buildingNodeLinkedMapCache = {}
+
+const getLinksInBuilding = async buildingId => {
+    return (
+        DB('indoor_link')
+        .select('link_id', 'snode_id', 'enode_id', DB.raw('astext(indoor_link.geometry) as geometry'), 'direction', 'length')
+        .innerJoin('indoor_floor', 'indoor_link.fl_id', 'indoor_floor.fl_id')
+        .where('indoor_floor.building_id', buildingId)
+        .then(res => {
+            return res
+        })
+    )
+}
+
+const getBuildingNodeLinkedMap = async buildingId => {
+    const nodeLinkedMap = buildingNodeLinkedMapCache[buildingId]
+    if (nodeLinkedMap) {
+        return Promise.resolve(nodeLinkedMap)
+    } else {
+        return getLinksInBuilding(buildingId).then(res => {
+            buildingNodeLinkedMapCache[buildingId] = RoutePlanning.initNodeLinkedMap(res)
+
+            return buildingNodeLinkedMapCache[buildingId]
+        })
+    }
+}
 
 module.exports = {
     getBuildings: async ctx => {
@@ -13,6 +41,8 @@ module.exports = {
     },
     getBuildingById: async (ctx) => {
         const id = ctx.params.id
+
+        getBuildingNodeLinkedMap(id)
 
         return DB('indoor_building')
             .select('building_id', 'kind', 'c_name as name', DB.raw('astext(geometry) as geometry'), 'center_coordinate', 'default_fl', 'parking')
@@ -113,16 +143,13 @@ module.exports = {
                 ctx.state.data = res
             })
     },
-    getLinksInBuilding: async ctx => {
-        const buildingId = ctx.params.buildingId
+    getClosestRoute: async (ctx) => {
+        const buildingId = ctx.query.buildingId || 0
+        const sNodeId = ctx.query.sNodeId || 0
+        const eNodeId = ctx.query.eNodeId || 0
 
-        return DB('indoor_link')
-            .select('link_id', 'snode_id', 'enode_id', 'direction', 'length')
-            .innerJoin('indoor_floor', 'indoor_link.fl_id', 'indoor_floor.fl_id')
-            .where('indoor_floor.building_id', buildingId)
-            // .limit(10)
-            .then(res => {
-                ctx.state.data = res
-            })
+        return getBuildingNodeLinkedMap(buildingId).then(data => {
+            ctx.state.data = RoutePlanning.calcRoute(sNodeId, eNodeId, data)
+        })
     }
 }

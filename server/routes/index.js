@@ -52,6 +52,6 @@ router.get('/indoor/building/poi/:id', controllers.indoor.getPoiById)
 
 router.get('/indoor/building/search/poi', controllers.indoor.getPoisByTip)
 
-router.get('/indoor/building/link/:buildingId', controllers.indoor.getLinksInBuilding)
+router.get('/indoor/building/link/route', controllers.indoor.getClosestRoute)
 
 module.exports = router
