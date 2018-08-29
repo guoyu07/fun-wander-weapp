@@ -40,13 +40,13 @@ router.get('/indoor/building/:id', controllers.indoor.getBuildingById)
 
 router.get('/indoor/building/floor/:buildingId', controllers.indoor.getFloorsInBuilding)
 
+router.get('/indoor/building/floor/face/:floorId', controllers.indoor.getFacesOnFloor)
+
 router.get('/indoor/building/floor/link/:floorId', controllers.indoor.getLinksOnFloor)
 
 router.get('/indoor/building/floor/node/:floorId', controllers.indoor.getNodesOnFloor)
 
 router.get('/indoor/building/floor/poi/:floorId', controllers.indoor.getPoisOnFloor)
-
-router.get('/indoor/building/floor/poiFace/:floorId', controllers.indoor.getPoiFacesOnFloor)
 
 router.get('/indoor/building/poi/:id', controllers.indoor.getPoiById)
 
