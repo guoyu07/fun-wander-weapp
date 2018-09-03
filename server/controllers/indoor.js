@@ -45,8 +45,11 @@ module.exports = {
         getBuildingNodeLinkedMap(id)
 
         return DB('indoor_building')
-            .select('building_id', 'kind', 'c_name as name', DB.raw('astext(geometry) as geometry'), 'center_coordinate', 'default_fl', 'parking')
-            .where('building_id', id)
+            .select('indoor_building.building_id', 'kind', 'c_name as name', DB.raw('astext(indoor_building.geometry) as geometry'), 'center_coordinate', 'indoor_floor.fl_id as default_fl_id', 'parking')
+            .leftJoin('indoor_floor', function () {
+                this.on('indoor_building.building_id', '=', 'indoor_floor.building_id').andOn('indoor_building.default_fl', '=', 'indoor_floor.fl_num')
+            })
+            .where('indoor_building.building_id', id)
             .then(res => {
                 ctx.state.data = res
             })
@@ -57,6 +60,18 @@ module.exports = {
         return DB('indoor_floor')
             .select('fl_id', 'fl_name', 'fl_num', 'fl_infor', DB.raw('astext(geometry) as geometry'))
             .where('building_id', buildingId)
+            .then(res => {
+                ctx.state.data = res
+            })
+    },
+    getFacesOnFloor: async (ctx) => {
+        const floorId = ctx.params.floorId
+
+        return DB('indoor_face')
+            .select('indoor_face.face_id', DB.raw('astext(indoor_face.geometry) as geometry'), 'indoor_poi.poi_id', 'indoor_poi.kind as poi_kind')
+            .innerJoin('indoor_poi', 'indoor_face.face_id', 'indoor_poi.face_id')
+            .where('indoor_poi.fl_id', floorId)
+            // .limit(10)
             .then(res => {
                 ctx.state.data = res
             })
@@ -100,20 +115,8 @@ module.exports = {
         const floorId = ctx.params.floorId
 
         return DB('indoor_poi')
-            .select('poi_id', 'kind', 'c_name as name', DB.raw('astext(geometry) as geometry'), 'face_id')
+            .select('poi_id', 'kind', 'c_name as name', 'address', DB.raw('astext(geometry) as geometry'), 'face_id')
             .where('fl_id', floorId)
-            // .limit(10)
-            .then(res => {
-                ctx.state.data = res
-            })
-    },
-    getPoiFacesOnFloor: async (ctx) => {
-        const floorId = ctx.params.floorId
-
-        return DB('indoor_face')
-            .select('indoor_face.face_id', DB.raw('astext(indoor_face.geometry) as geometry'), 'indoor_poi.poi_id', 'indoor_poi.kind as poi_kind')
-            .innerJoin('indoor_poi', 'indoor_poi.face_id', 'indoor_face.face_id')
-            .where('indoor_poi.fl_id', floorId)
             // .limit(10)
             .then(res => {
                 ctx.state.data = res
@@ -123,9 +126,10 @@ module.exports = {
         const poiId = ctx.params.id
 
         return DB('indoor_poi')
-            .select('poi_id', 'indoor_poi.kind', 'c_name as name', 'address', 'indoor_poi.face_id', 'indoor_node.node_id')
-            .innerJoin('indoor_node', 'indoor_node.face_id', 'indoor_poi.face_id')
+            .select('poi_id', 'indoor_poi.kind', 'c_name as name', 'address', DB.raw('GROUP_CONCAT(indoor_node.node_id) as node_id'))
+            .leftJoin('indoor_node', 'indoor_node.face_id', 'indoor_poi.face_id')
             .where('poi_id', poiId)
+            .groupBy('indoor_poi.poi_id')
             .then(res => {
                 ctx.state.data = res
             })
@@ -135,10 +139,12 @@ module.exports = {
         const tip = ctx.query.tip || ''
 
         return DB('indoor_poi')
-            .select('poi_id', 'kind', 'c_name as name', 'address')
+            .select('poi_id', 'indoor_poi.kind', 'c_name as name', 'address', DB.raw('GROUP_CONCAT(indoor_node.node_id) as node_id'))
             .innerJoin('indoor_floor', 'indoor_poi.fl_id', 'indoor_floor.fl_id')
+            .innerJoin('indoor_node', 'indoor_poi.face_id', 'indoor_node.face_id')
             .where('indoor_floor.building_id', buildingId)
             .andWhere('indoor_poi.c_name', 'like', '%' + tip + '%')
+            .groupBy('indoor_poi.poi_id')
             .then(res => {
                 ctx.state.data = res
             })
